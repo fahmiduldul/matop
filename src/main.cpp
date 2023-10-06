@@ -1,4 +1,7 @@
 
+template<class T>
+class Matrix
+
 int main() {
   Matrix<float> matA(5, 3);
   Matrix<float> matB(5, 3);
