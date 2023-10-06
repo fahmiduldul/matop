@@ -58,7 +58,6 @@ public:
     DoubleMatrix resMat(M, N);
     
     add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
-
     
     return resMat;
   }
@@ -73,17 +72,3 @@ public:
     }
   }
 };
-
-//int main() {
-//  Matrix<float> mat(10, 5);
-//  
-//  mat.set(3, 0) = 3.0;
-//  mat.set(4, 1) = 4.0;
-//  mat.set(5, 2) = 5.0;
-//  
-//  mat.print();
-//  std::printf("\n\n");
-//  mat.transpose().print();
-//  
-//  return 0;
-//}

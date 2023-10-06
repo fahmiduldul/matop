@@ -12,6 +12,10 @@ int main() {
   matB.set(3,1) = 9.0;
   
   DoubleMatrix matRes = matA + matB;
+  
+  matA.print();
+  matB.print();
+  
   matRes.print();
   
   return 0;
