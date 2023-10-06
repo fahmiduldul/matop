@@ -1,6 +1,6 @@
 
 template<class T>
-class Matrix
+class Matrix;
 
 int main() {
   Matrix<float> matA(5, 3);
