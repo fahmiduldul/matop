@@ -21,7 +21,7 @@ void add(T* a, T* b, T* res, int N) {
   HANDLE_ERROR( cudaMemcpy(dev_a, a, N * sizeof(double), cudaMemcpyHostToDevice) );
   HANDLE_ERROR( cudaMemcpy(dev_b, b, N * sizeof(double), cudaMemcpyHostToDevice) );
 
-  HANDLE_ERROR( dev_add<<<128,128>>>(dev_a, dev_b, dev_res, N) );
+  dev_add<<<128,128>>>(dev_a, dev_b, dev_res, N);
 
   HANDLE_ERROR( cudaMemcpy(res, dev_res, N * sizeof(double), cudaMemcpyDeviceToHost) );
 

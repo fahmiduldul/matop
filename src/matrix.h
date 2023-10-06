@@ -58,6 +58,7 @@ public:
     DoubleMatrix resMat(M, N);
     
     add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
+
     
     return resMat;
   }
