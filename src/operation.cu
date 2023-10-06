@@ -4,6 +4,6 @@ __global__ void add(T* a, T* b, T* res, int N) {
     
     while (idx < N) {
       res[idx] = a[idx] + b[idx];
-      idx += blockDim.x * gridDim.x
+      idx += blockDim.x * gridDim.x;
     }
 };
