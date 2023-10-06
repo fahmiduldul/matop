@@ -25,3 +25,11 @@ void add(T* a, T* b, T* res, int N) {
 
   cudaFree(dev_a); cudaFree(dev_b); cudaFree(dev_res);
 }
+
+void util() {
+  double* a;
+  add(a,a,a,1);
+  
+  long* b;
+  add(b,b,b,1);
+}
