@@ -10,11 +10,7 @@ int main() {
   matB.set(3,1) = 9.0;
   
   Matrix<float> matRes = matA + matB; 
-  
-  
-  mat.print();
-  std::printf("\n\n");
-  mat.transpose().print();
+  matRes.print();
   
   return 0;
 }

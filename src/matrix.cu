@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+template <class T>
+void add(T* a, T* b, T* res, int N);
 
 template <class T>
 class Matrix {
@@ -68,7 +70,7 @@ public:
     
     cudaMemcpy(resMat.getPointer(), dev_res, M*N * sizeof(T), cudaMemcpyDeviceToHost);
     
-    cudaFree(dev_a); cudaFree(dev_b); cudaFree(dev_c);
+    cudaFree(dev_a); cudaFree(dev_b); cudaFree(dev_res);
     
     return resMat;
   }
