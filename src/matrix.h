@@ -1,29 +1,29 @@
+#pragma once
+
 #include <cstdint>
 #include <cstdio>
-#include <iostream>
 #include <stdexcept>
 
-template <class T>
+template<class T>
 void add(T* a, T* b, T* res, int N);
 
-template <class T>
-class Matrix {
+class DoubleMatrix {
   uint32_t M, N;
-  T* data;
+  double* data;
 
 public:
-  Matrix(int M, int N): N(N), M(M) {
-    data = new T[M*N];
+  DoubleMatrix(int M, int N): N(N), M(M) {
+    data = new double[M*N];
   }
   
-  Matrix(T* data, int N, int M): data(data), N(N), M(M) {}
+  DoubleMatrix(double* data, int N, int M): data(data), N(N), M(M) {}
 
-  ~Matrix() {
+  ~DoubleMatrix() {
     delete[] data;
   }
   
-  Matrix transpose() {
-    Matrix transposedMatrix(N, M);
+  DoubleMatrix transpose() {
+    DoubleMatrix transposedMatrix(N, M);
     
 //    optimize this later with gpu
     for (uint32_t i = 0; i < M; i++) {
@@ -35,42 +35,30 @@ public:
     return transposedMatrix;
   }
   
-  T get(int i, int j) {
+  double get(int i, int j) const {
     if (i >= M || i < 0 || j >= N || j < 0 )
       throw std::invalid_argument("out of bound error");
     return data[i + j*M];
   }
   
-  T* getPointer() {
+  double* getPointer() const {
     return data;
   }
   
-  T& set(int i, int j) {
+  double& set(int i, int j) {
     if (i >= M || i < 0 || j >= N || j < 0 )
       throw std::invalid_argument("out of bound error");
     return data[i + j*M];
   }
   
-  Matrix operator+(const Matrix<T>& other) {
+  DoubleMatrix operator+(const DoubleMatrix& other) {
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
     
-    Matrix<T> resMat(M, N);
+    DoubleMatrix resMat(M, N);
     
-    T *dev_a, *dev_b, *dev_res;  
-    
-    cudaMalloc((void**)&dev_a, M*N * sizeof(T));
-    cudaMalloc((void**)&dev_b, M*N * sizeof(T));
-    cudaMalloc((void**)&dev_res, M*N * sizeof(T));
-    
-    cudaMemcpy(dev_a, getPointer(), M*N * sizeof(T), cudaMemcpyHostToDevice);
-    cudaMemcpy(dev_b, other.getPointer(), M*N * sizeof(T), cudaMemcpyHostToDevice);
-    
-    add<<<128,128>>>(dev_a, dev_b, dev_res, N);
-    
-    cudaMemcpy(resMat.getPointer(), dev_res, M*N * sizeof(T), cudaMemcpyDeviceToHost);
-    
-    cudaFree(dev_a); cudaFree(dev_b); cudaFree(dev_res);
+    add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
+
     
     return resMat;
   }
@@ -79,7 +67,7 @@ public:
     std::printf("%d, %d \n", M, N);
     for (int i = 0; i < M; i++) {
       for (int j = 0; j < N; j++) {
-        std::cout << get(i, j) << " ";
+        std::printf("%.2f ", get(i, j));
       }
       std::printf("\n");
     }

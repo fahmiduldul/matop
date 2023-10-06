@@ -1,10 +1,9 @@
+#include "matrix.h"
 
-template<class T>
-class Matrix;
 
 int main() {
-  Matrix<float> matA(5, 3);
-  Matrix<float> matB(5, 3);
+  DoubleMatrix matA(5, 3);
+  DoubleMatrix matB(5, 3);
   
   matA.set(3, 0) = 3.0;
   matA.set(4, 1) = 4.0;
@@ -12,7 +11,7 @@ int main() {
   
   matB.set(3,1) = 9.0;
   
-  Matrix<float> matRes = matA + matB; 
+  DoubleMatrix matRes = matA + matB;
   matRes.print();
   
   return 0;
