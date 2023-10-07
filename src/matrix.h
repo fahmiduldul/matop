@@ -4,34 +4,25 @@
 #include <stdexcept>
 
 template<class T>
-void add(T* a, T* b, T* res, int N);
+void cuda_add(T* a, T* b, T* res, int N);
 
-class DoubleMatrix {
+template<class T>
+void cuda_transpose(T* input, T* res, int M, int N);
+
+template<class T>
+class Matrix {
   uint32_t M, N;
   double* data;
 
 public:
-  DoubleMatrix(int M, int N): N(N), M(M) {
+  Matrix(int M, int N): N(N), M(M) {
     data = new double[M*N];
   }
   
-  DoubleMatrix(double* data, int N, int M): data(data), N(N), M(M) {}
+  Matrix(double* data, int N, int M): data(data), N(N), M(M) {}
 
-  ~DoubleMatrix() {
+  ~Matrix() {
     delete[] data;
-  }
-  
-  DoubleMatrix transpose() {
-    DoubleMatrix transposedMatrix(N, M);
-    
-//    optimize this later with gpu
-    for (uint32_t i = 0; i < M; i++) {
-      for (uint32_t j = 0; j < N; j++) {
-        transposedMatrix.set(j, i) = get(i, j);
-      }
-    }
-    
-    return transposedMatrix;
   }
   
   double get(int i, int j) const {
@@ -50,25 +41,37 @@ public:
     return data[i + j*M];
   }
   
-  DoubleMatrix operator+(const DoubleMatrix& other) {
+  Matrix operator+(const Matrix& other) {
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
     
-    DoubleMatrix resMat(M, N);
+    Matrix resMat(M, N);
     
-    add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
-
+    cuda_add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
     
     return resMat;
   }
   
+  Matrix transpose() {
+    Matrix transposedMatrix(N, M);
+
+    cuda_transpose(getPointer(), transposedMatrix.getPointer(), M, N);
+
+    return transposedMatrix;
+  }
+
   void print() {
     std::printf("%d, %d \n", M, N);
     for (int i = 0; i < M; i++) {
       for (int j = 0; j < N; j++) {
-        std::printf("%.2f ", get(i, j));
+        if constexpr (std::is_same<T, double>::value)
+          std::printf("%.2f ", get(i, j));
+        else
+          std::printf("%ld ", get(i,j));
       }
       std::printf("\n");
     }
   }
 };
+
+// clang++ src/main.cpp src/matrix_operation.cu -o main --cuda-gpu-arch=sm_35 -L/usr/lib/cuda/lib64 -lcudart_static -ldl -lrt -pthread
