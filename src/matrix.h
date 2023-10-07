@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 template<class T>
-void cuda_add(T* a, T* b, T* res, int N);
+void cuda_add_or_sub(T* a, T* b, T* res, int N, bool isAdd);
 
 template<class T>
 void cuda_transpose(T* input, T* res, int M, int N);
@@ -47,8 +47,19 @@ public:
     
     Matrix resMat(M, N);
     
-    cuda_add(getPointer(), other.getPointer(), resMat.getPointer(), M * N);
+    cuda_add_or_sub(getPointer(), other.getPointer(), resMat.getPointer(), M * N, true);
     
+    return resMat;
+  }
+
+  Matrix operator-(const Matrix& other) {
+    if (M != other.M || N != other.N)
+      throw std::invalid_argument("matrix doesn't have same dimension");
+
+    Matrix resMat(M, N);
+
+    cuda_add_or_sub(getPointer(), other.getPointer(), resMat.getPointer(), M * N, false);
+
     return resMat;
   }
   
