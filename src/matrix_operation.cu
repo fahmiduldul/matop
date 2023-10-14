@@ -154,10 +154,10 @@ void util() {
   // this function is needed so that the compiler compiles those functions above in the object file
 
   double* a;
-  cuda_simple_op(a,a,a,1, "add");
+  cuda_simple_op(a,a,a,1, std::string("add"));
   cuda_transpose(a,a,1,1);
   
   long* b;
-  cuda_simple_op(b,b,b,1, "add");
+  cuda_simple_op(b,b,b,1, std::string("add"));
   cuda_transpose(b,b,1,1);
 }
