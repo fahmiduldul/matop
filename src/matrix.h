@@ -70,6 +70,7 @@ public:
   }
 
   Matrix operator*(const Matrix& other) {
+    // fix this to matrix operation instead of simple operation
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
 

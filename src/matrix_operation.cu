@@ -1,7 +1,7 @@
-#include "handler.h"
 #include <algorithm>
 #include <stdexcept>
 #include <string>
+#include "handler.cuh"
 
 template<class T>
 __global__ void dev_add(T* a, T* b, T* res, int N) {
@@ -154,10 +154,10 @@ void util() {
   // this function is needed so that the compiler compiles those functions above in the object file
 
   double* a;
-  cuda_simple_op(a,a,a,1);
+  cuda_simple_op(a,a,a,1, "add");
   cuda_transpose(a,a,1,1);
   
   long* b;
-  cuda_simple_op(b,b,b,1);
+  cuda_simple_op(b,b,b,1, "add");
   cuda_transpose(b,b,1,1);
 }

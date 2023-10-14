@@ -20,5 +20,8 @@ int main() {
   
   matRes.transpose().print();
 
+  auto randomMat = Matrix<double>::createRandom(10,4);
+  randomMat.print();
+  
   return 0;
 }
