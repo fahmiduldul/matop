@@ -14,22 +14,22 @@ class Matrix {
 
 public:
   Matrix(int M, int N): N(N), M(M) {
-    data = new double[M*N];
+    data = new T[M*N];
   }
   
-  Matrix(double* data, int N, int M): data(data), N(N), M(M) {}
+  Matrix(T* data, int N, int M): data(data), N(N), M(M) {}
 
   ~Matrix() {
     delete[] data;
   }
   
-  double get(int i, int j) const {
+  T get(int i, int j) const {
     if (i >= M || i < 0 || j >= N || j < 0 )
       throw std::invalid_argument("out of bound error");
     return data[i + j*M];
   }
   
-  double* getPointer() const {
+  T* getPointer() const {
     return data;
   }
   
@@ -39,62 +39,62 @@ public:
     return data[i + j*M];
   }
   
-  Matrix operator+(const Matrix& other) {
+  Matrix<T> operator+(const Matrix<T>& other) {
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
     
-    Matrix resMat(M, N);
+    Matrix<T> resMat(M, N);
     
     cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("add"));
     
     return resMat;
   }
 
-  Matrix operator-(const Matrix& other) {
+  Matrix<T> operator-(const Matrix<T>& other) {
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
 
-    Matrix resMat(M, N);
+    Matrix<T> resMat(M, N);
 
     cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("substract"));
 
     return resMat;
   }
 
-  Matrix operator*(const Matrix& other) {
+  Matrix<T> operator*(const Matrix<T>& other) {
     // fix this to matrix operation instead of simple operation
     if (M != other.M || N != other.N)
       throw std::invalid_argument("matrix doesn't have same dimension");
 
-    Matrix resMat(M, N);
+    Matrix<T> resMat(M, N);
 
     cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("multiply"));
 
     return resMat;
   }
 
-  Matrix operator*(long num) {
+  Matrix<T> operator*(long num) {
     long numMat[M*N];
     for (unsigned long i = 0; i < M*N; i++) {
       numMat[0] = num;
     }
 
-    Matrix resMat(M, N);
+    Matrix<T> resMat(M, N);
 
     cuda_simple_op(getPointer(), numMat, resMat.getPointer(), M * N, std::string("multiply"));
 
     return resMat;
   }
 
-  Matrix dot(const Matrix& other) {
+  Matrix<T> dot(const Matrix<T>& other) {
     if (M != other.M || N != 1 || other.N != 1)
       throw std::invalid_argument("dot product only support vector with same size");
 
     return cuda_dot_product(getPointer(), other.getPointer(), M);
   }
 
-  Matrix transpose() {
-    Matrix transposedMatrix(N, M);
+  Matrix<T> transpose() {
+    Matrix<T> transposedMatrix(N, M);
 
     cuda_transpose(getPointer(), transposedMatrix.getPointer(), M, N);
 
@@ -114,8 +114,8 @@ public:
     }
   }
 
-  static Matrix createRandom(int M, int N) {
-    Matrix res = Matrix(M, N);
+  static Matrix<T> createRandom(int M, int N) {
+    Matrix<T> res = Matrix<T>(M, N);
 
     std::srand((unsigned)time(NULL));
 
