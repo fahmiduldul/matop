@@ -139,8 +139,8 @@ T cuda_dot_product(T* a, T* b, int M) {
     }
 
     T tempResArr[threadPerBlock];
-    HANDLE_ERROR( cudaMemcpy(tempResArr, dev_partial_res, threadPerBlock * sizeof(T), cudaMemcpyDeviceToHost) );
-    cudaFree(dev_partial_res);
+    HANDLE_ERROR( cudaMemcpy(tempResArr, dev_partial_result, threadPerBlock * sizeof(T), cudaMemcpyDeviceToHost) );
+    cudaFree(dev_partial_result);
 
     T tempRes = 0;
     for (int i = 0; i < threadPerBlock; i++) {
