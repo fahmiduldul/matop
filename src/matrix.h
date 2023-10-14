@@ -9,7 +9,7 @@
 
 template<class T>
 class Matrix {
-  uint32_t M, N;
+  int M, N;
   T* data;
 
 public:
