@@ -8,15 +8,6 @@
 #include "matrix_operation.cuh"
 
 template<class T>
-void cuda_simple_op(T* a, T* b, T* res, int N, std::string op);
-
-template<class T>
-void cuda_transpose(T* input, T* res, int M, int N);
-
-template<class T>
-T cuda_dot_product(T* a, T* b, int M);
-
-template<class T>
 class Matrix {
   uint32_t M, N;
   T* data;
