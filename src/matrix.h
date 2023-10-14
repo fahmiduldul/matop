@@ -33,7 +33,7 @@ public:
     return data;
   }
   
-  double& set(int i, int j) {
+  T& set(int i, int j) {
     if (i >= M || i < 0 || j >= N || j < 0 )
       throw std::invalid_argument("out of bound error");
     return data[i + j*M];
@@ -45,7 +45,7 @@ public:
     
     Matrix<T> resMat(M, N);
     
-    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("add"));
+    cuda_simple_op<T>(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("add"));
     
     return resMat;
   }
