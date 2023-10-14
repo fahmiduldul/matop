@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include "handler.cuh"
+#pragma once
 
 template<class T>
 __global__ void dev_add(T* a, T* b, T* res, int N) {
@@ -148,16 +149,3 @@ T cuda_dot_product(T* a, T* b, int M) {
     
     return tempRes;
 };
-
-
-void util() {
-  // this function is needed so that the compiler compiles those functions above in the object file
-
-  double* a;
-  cuda_simple_op(a,a,a,1, std::string("add"));
-  cuda_transpose(a,a,1,1);
-  
-  long* b;
-  cuda_simple_op(b,b,b,1, std::string("add"));
-  cuda_transpose(b,b,1,1);
-}

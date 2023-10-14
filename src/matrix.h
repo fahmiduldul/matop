@@ -5,6 +5,7 @@
 #include <ctime>
 #include <stdexcept>
 #include <string>
+#include "matrix_operation.cuh"
 
 template<class T>
 void cuda_simple_op(T* a, T* b, T* res, int N, std::string op);
