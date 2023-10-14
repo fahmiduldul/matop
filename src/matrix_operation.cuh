@@ -54,7 +54,7 @@ void cuda_simple_op(T* a, T* b, T* res, int N, std::string& op) {
   } else if (op.compare("multiply") == 0) {
     dev_multiply<<<nBlock,nThread>>>(dev_a, dev_b, dev_res, N);
   } else {
-    throw std::invalid_argument("\"add\", \"substract\" & \"multiply\" are the only valid operation values")
+    throw std::invalid_argument("\"add\", \"substract\" & \"multiply\" are the only valid operation values");
   }
 
   HANDLE_ERROR( cudaMemcpy(res, dev_res, N * sizeof(T), cudaMemcpyDeviceToHost) );
@@ -111,7 +111,7 @@ void dev_sum(T* a, T* partial_res, int M) {
 
 template<class T>
 T cuda_dot_product(T* a, T* b, int M) {
-    T *dev_a, *dev_b, *dev_mult_res, *dev_partial_res;
+    T *dev_a, *dev_b, *dev_mult_res, *dev_partial_result;
 
     // TODO: improve block and thread dimension to be depend on device capacity
     int threadPerBlock = std::min(256, M);
@@ -121,8 +121,8 @@ T cuda_dot_product(T* a, T* b, int M) {
     HANDLE_ERROR( cudaMalloc((void**)&dev_b, M * sizeof(T)) );
     HANDLE_ERROR( cudaMalloc((void**)&dev_mult_res, M * sizeof(T)) );
 
-    HANDLE_ERROR( cudaMemcpy(dev_a, a, N * sizeof(T), cudaMemcpyHostToDevice) );
-    HANDLE_ERROR( cudaMemcpy(dev_b, b, N * sizeof(T), cudaMemcpyHostToDevice) );
+    HANDLE_ERROR( cudaMemcpy(dev_a, a, M * sizeof(T), cudaMemcpyHostToDevice) );
+    HANDLE_ERROR( cudaMemcpy(dev_b, b, M * sizeof(T), cudaMemcpyHostToDevice) );
 
     dev_multiply<<<nBlock, threadPerBlock>>>(dev_a, dev_b, dev_mult_res, M, "multiply");
 
