@@ -35,7 +35,7 @@ __global__ void dev_multiply(T* a, T* b, T* res, int N) {
 };
 
 template<class T>
-void cuda_simple_op(T* a, T* b, T* res, int N, std::string& op) {
+void cuda_simple_op(T* a, T* b, T* res, int N, const std::string& op) {
   T *dev_a, *dev_b, *dev_res;
   
   HANDLE_ERROR( cudaMalloc((void**)&dev_a, N * sizeof(T)) );

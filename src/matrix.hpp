@@ -45,7 +45,7 @@ public:
     
     Matrix<T> resMat(M, N);
     
-    cuda_simple_op<T>(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("add"));
+    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, "add");
     
     return resMat;
   }
@@ -56,7 +56,7 @@ public:
 
     Matrix<T> resMat(M, N);
 
-    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("substract"));
+    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, "substract");
 
     return resMat;
   }
@@ -68,7 +68,7 @@ public:
 
     Matrix<T> resMat(M, N);
 
-    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, std::string("multiply"));
+    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, "multiply");
 
     return resMat;
   }
@@ -81,7 +81,7 @@ public:
 
     Matrix<T> resMat(M, N);
 
-    cuda_simple_op(getPointer(), numMat, resMat.getPointer(), M * N, std::string("multiply"));
+    cuda_simple_op(getPointer(), numMat, resMat.getPointer(), M * N, "multiply");
 
     return resMat;
   }
