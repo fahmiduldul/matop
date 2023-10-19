@@ -1,4 +1,5 @@
 #include <cstdio>
+#pragma once
 
 static void HandleError( cudaError_t err,
                         const char *file,

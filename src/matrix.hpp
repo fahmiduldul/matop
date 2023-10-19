@@ -63,12 +63,18 @@ public:
 
   Matrix<T> operator*(const Matrix<T>& other) {
     // fix this to matrix operation instead of simple operation
-    if (M != other.M || N != other.N)
-      throw std::invalid_argument("matrix doesn't have same dimension");
+    if (N != other.M)
+      throw std::invalid_argument("matrix doesn't have matching dimension");
 
-    Matrix<T> resMat(M, N);
+    Matrix<T> resMat(M, other.N);
+    Matrix<T> tempMat = transpose();
 
-    cuda_simple_op(getPointer(), other.getPointer(), resMat.getPointer(), M * N, "multiply");
+    for (int i = 0; i < M; i++) {
+      for (int j = 0; j < other.N; j++) {
+        T res = cuda_dot_product(tempMat.getPointer()[i], other.getPointer()[j], tempMat.M);
+        resMat.set(i, j) = res;
+      }
+    }
 
     return resMat;
   }
