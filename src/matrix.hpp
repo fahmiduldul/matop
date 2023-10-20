@@ -127,7 +127,7 @@ public:
 
     for (int i = 0; i < M; i++) {
       for (int j = 0; j < N; j++) {
-        res.set(i,j) = (T)(std::rand() * 1000);
+        res.set(i,j) = (T)(std::rand() * 10);
       }
     }
     

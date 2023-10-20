@@ -103,7 +103,7 @@ __global__ void dev_sum(T* a, T* partial_res, int M) {
 
     T temp = 0;
     while(it < M) {
-      temp += a[tid];
+      temp += a[it];
       it += blockDim.x * gridDim.x;
     }
 
@@ -130,11 +130,13 @@ T cuda_dot_product(T* a, T* b, int M) {
     cudaFree(dev_a); cudaFree(dev_b);
 
     HANDLE_ERROR( cudaMalloc((void**)&dev_partial_result, threadPerBlock * nBlock * sizeof(T)) );
+    int itSize = M;
     while(nBlock > 0) {
-      dev_sum<<<nBlock, threadPerBlock>>>(dev_mult_res, dev_partial_result, M);
+      dev_sum<<<nBlock, threadPerBlock>>>(dev_mult_res, dev_partial_result, itSize);
 
       cudaFree(dev_mult_res);
       dev_mult_res = dev_partial_result;
+      itSize = nBlock * threadPerBlock;
       nBlock /= 4;
       HANDLE_ERROR( cudaMalloc((void**)&dev_partial_result, threadPerBlock * nBlock * sizeof(T)) );
     }

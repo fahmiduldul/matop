@@ -30,8 +30,8 @@ int main() {
 
   std::cout << "----------------------------------------" << std::endl;
   
-  auto mat1 = Matrix<double>::createRandom(10,1);
-  auto mat2 = Matrix<double>::createRandom(10,1);
+  auto mat1 = Matrix<double>::createRandom(550, 1);
+  auto mat2 = Matrix<double>::createRandom(550, 1);
 
   mat1.print();
   mat2.print();
