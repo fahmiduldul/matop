@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 #include <string>
 #include "handler.cuh"
 #pragma once
@@ -96,7 +97,7 @@ void cuda_transpose(T* input, T* res, int M, int N) {
 };
 
 template<class T>
-void dev_sum(T* a, T* partial_res, int M) {
+__global__ void dev_sum(T* a, T* partial_res, int M) {
     int tid = blockDim.x * blockIdx.x + threadIdx.x;
     int it = tid;
 
@@ -124,7 +125,7 @@ T cuda_dot_product(T* a, T* b, int M) {
     HANDLE_ERROR( cudaMemcpy(dev_a, a, M * sizeof(T), cudaMemcpyHostToDevice) );
     HANDLE_ERROR( cudaMemcpy(dev_b, b, M * sizeof(T), cudaMemcpyHostToDevice) );
 
-    dev_multiply<<<nBlock, threadPerBlock>>>(dev_a, dev_b, dev_mult_res, M, "multiply");
+    dev_multiply<<<nBlock, threadPerBlock>>>(dev_a, dev_b, dev_mult_res, M);
 
     cudaFree(dev_a); cudaFree(dev_b);
 
@@ -139,7 +140,7 @@ T cuda_dot_product(T* a, T* b, int M) {
     }
 
     T tempResArr[threadPerBlock];
-    HANDLE_ERROR( cudaMemcpy(tempResArr, dev_partial_result, threadPerBlock * sizeof(T), cudaMemcpyDeviceToHost) );
+    HANDLE_ERROR( cudaMemcpy(tempResArr, dev_mult_res, threadPerBlock * sizeof(T), cudaMemcpyDeviceToHost) );
     cudaFree(dev_partial_result);
 
     T tempRes = 0;

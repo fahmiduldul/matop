@@ -92,7 +92,7 @@ public:
     return resMat;
   }
 
-  Matrix<T> dot(const Matrix<T>& other) {
+  T dot(const Matrix<T>& other) {
     if (M != other.M || N != 1 || other.N != 1)
       throw std::invalid_argument("dot product only support vector with same size");
 

@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include <iostream>
 
 
 int main() {
@@ -18,10 +19,26 @@ int main() {
   
   matRes.print();
   
+  std::cout << "----------------------------------------" << std::endl;
+
   matRes.transpose().print();
+
+  std::cout << "----------------------------------------" << std::endl;
 
   auto randomMat = Matrix<double>::createRandom(10,4);
   randomMat.print();
+
+  std::cout << "----------------------------------------" << std::endl;
+  
+  auto mat1 = Matrix<double>::createRandom(10,1);
+  auto mat2 = Matrix<double>::createRandom(10,1);
+
+  mat1.print();
+  mat2.print();
+
+  double res = mat1.dot(mat2);
+
+  std::cout << res << std::endl;
   
   return 0;
 }
